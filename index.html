@@ -3662,7 +3662,7 @@ body.gm-modos #gmUI{display:none!important}
       if (pipOn) { isPipMinimized = false; document.getElementById('pipCanvasBox').style.display = 'block'; }
     }
 
-    const APP_VERSION = '12.44';
+    const APP_VERSION = '12.45';
     const APP_HOME = ES_MSG ? URL_MSGAME : URL_VJSHOW;
     function initCredits() { try { document.getElementById('plateVer').textContent = APP_VERSION; } catch (e) {}
       pintaCreditos(); if (window.AVCREDITO) window.AVCREDITO.alCambiar(pintaCreditos);
@@ -4077,7 +4077,7 @@ body.gm-modos #gmUI{display:none!important}
         return navigator.mediaDevices.getUserMedia({ video: id ? { deviceId: { exact: id } } : true, audio: false });
       }
       async function cam() { try { useStream(await openCam(g('imDev').value), (g('imDev').selectedOptions[0] || {}).text); devs(); } catch (e) { showToast('No se pudo abrir la entrada de vídeo'); setVal('chkLive', false); } }
-      g('imCam').onclick = cam; devs();
+      g('imCam').onclick = cam; { let dv = false; const una = () => { if (!dv) { dv = true; devs(); } }; ['pointerdown', 'focus'].forEach(e => g('imDev').addEventListener(e, una)); }   /* v12.45 · las entradas de vídeo se buscan al tocar su lista, no al arrancar */
       g('camQR').addEventListener('click', async () => {
         try { if (location.protocol === 'file:') showToast('Para vincular un móvil abre la app desde su dirección web (https)');
           await loadScript('lib/peerjs.min.js'); await loadScript('lib/qrcode.min.js');
@@ -4966,11 +4966,11 @@ body.gm-modos #gmUI{display:none!important}
       /* ---------- jugadores (hasta 4): cada móvil ocupa un hueco con su nombre, color y calibración ---------- */
       const PCOL = ['#ff3b3b', '#3bf3ff', '#56f700', '#ffd23f', '#b26bff', '#ff5ec4', '#ff8a00', '#ffffff'], PCOLN = ['🔴 Rojo', '🔵 Cian', '🟢 Verde', '🟡 Amarillo', '🟣 Morado', '🩷 Rosa', '🟠 Naranja', '⚪ Blanco'];
       const PLS = (() => { const sv = LS('VJSHOW_PLAYERS') || []; return [0, 1, 2, 3].map(i => { const q = sv[i] || {}, ge = /^gesto-/.test(q.cid || '');   /* v12.41 · los puestos que ocupaban las manos («Mano 1», «Mano 2») vuelven a ser jugadores normales: ahora la mano es el mando de un jugador */
-        return { i, n: (!ge && q.n) || (TT('Jugador') + ' ' + (i + 1)), c: q.c || PCOL[i], on: ge ? i === 0 : q.on !== undefined ? !!q.on : i === 0, cid: ge ? null : q.cid || null, modo: ['raton', 'movil', 'mano', 'cuerpo'].includes(q.m) ? q.m : '', conn: null, pad: i ? mkPad() : pad, raw: i ? { y: 0, p: 0, g: 0, t: 0 } : raw, cal: i ? (LS('VJSHOW_PADCAL_' + i) || { yc: 0, pc: 0, ys: 28, ps: -18 }) : cal, gcol: null, gcap: 'm' }; }); })();
+        return { i, n: (!ge && q.n) || (TT('Jugador') + ' ' + (i + 1)), c: q.c || PCOL[i], on: ge ? i === 0 : q.on !== undefined ? !!q.on : i === 0, cid: ge ? null : q.cid || null, modo: ['raton', 'movil'].includes(q.m) ? q.m : '', conn: null, pad: i ? mkPad() : pad, raw: i ? { y: 0, p: 0, g: 0, t: 0 } : raw, cal: i ? (LS('VJSHOW_PADCAL_' + i) || { yc: 0, pc: 0, ys: 28, ps: -18 }) : cal, gcol: null, gcap: 'm' }; }); })();
       /* v12.12 · el color de cada jugador no se repite nunca, y un móvil que traiga el nombre por defecto de otro puesto («Jugador 2» en el puesto 1) toma el de su puesto */
       function unicos() { const us = []; PLS.forEach(p => { if (/^\s*(jugador|player)\s*\d+\s*$/i.test(p.n || '')) p.n = TT('Jugador') + ' ' + (p.i + 1); if (!PCOL.includes(p.c) || us.includes(p.c)) p.c = [PCOL[p.i]].concat(PCOL).find(c => !us.includes(c) && !PLS.some(o => o.i > p.i && o.c === c)) || PCOL.find(c => !us.includes(c)); us.push(p.c); }); }
       function fijaPL(p, n, c) { if (n) { n = String(n).slice(0, 14); p.n = /^\s*(jugador|player)\s*\d+\s*$/i.test(n) ? TT('Jugador') + ' ' + (p.i + 1) : n; } if (c && PCOL.includes(c) && !PLS.some(o => o !== p && o.c === c)) p.c = c; unicos(); }
-      const savePL = () => LS('VJSHOW_PLAYERS', PLS.map(p => ({ n: p.n, c: p.c, on: p.on, cid: p.cid, m: p.modo })));
+      const savePL = () => LS('VJSHOW_PLAYERS', PLS.map(p => ({ n: p.n, c: p.c, on: p.on, cid: p.cid, m: p.modo === 'mano' || p.modo === 'cuerpo' ? '' : p.modo })));   /* v12.45 · jugar con la cámara no se guarda: al volver a abrir, nadie la enciende sin pedirlo */
       unicos(); savePL();
       const calKey = i => i ? 'VJSHOW_PADCAL_' + i : 'VJSHOW_PADCAL';
       let act = 0; function use(i) { if (!PLS[i]) return; act = i; pad = PLS[i].pad; raw = PLS[i].raw; cal = PLS[i].cal; }
@@ -8339,7 +8339,7 @@ body.gm-modos #gmUI{display:none!important}
     const GESTOS = (() => {
       const $e = id => document.getElementById(id), T_ = k => { try { return I18N.T(k); } catch (e) { return k; } }, LSK = 'MSGAME_GESTOS';
       const MP = 'https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/', MPP = 'https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/', DW = 160, DH = 90;   // v12.40 · MediaPipe Pose para el cuerpo entero
-      const cfg = { on: false, modo: 'mano', col: '', dep: '' }; try { Object.assign(cfg, JSON.parse(localStorage.getItem(LSK) || '{}')); } catch (e) {}
+      const cfg = { on: false, modo: 'mano', col: '', dep: '' }; try { Object.assign(cfg, JSON.parse(localStorage.getItem(LSK) || '{}')); } catch (e) {} cfg.on = false;   /* v12.45 · al abrir, la cámara siempre apagada */
       const guarda = () => { try { localStorage.setItem(LSK, JSON.stringify(cfg)); } catch (e) {} };
       let pose = null, resP = null, CU = {}; let sc = null, sd = null, vc = null, vd = null, hands = null, res = null, ocupado = false, raf = 0, ult = 0, gl = null, D = null, cerca = null, hist = [], info = { t: 0 }, aviso = '', cx = 0, nMax = 2, tOc = 0, resT = 0, resU = 0, abriendo = false;
       const J = [null, null];   // v12.41 · cada mano que se sigue: { slot (el jugador al que mueve), x, y, ux, uy, vu, vv (velocidad), pin, visto }
@@ -8496,8 +8496,7 @@ body.gm-modos #gmUI{display:none!important}
         on.addEventListener('change', () => { cfg.on = on.checked; guarda(); if (cfg.on) { if (!sc && !sd) abre(); else if (cfg.modo === 'mano') detector(); else if (cfg.modo === 'cuerpo') detectorP(); } else fuera(); texto(); });
         mo.addEventListener('change', () => { cfg.modo = mo.value; guarda(); fuera(); CU = {}; if (cfg.on && cfg.modo === 'mano' && vc) detector(); if (cfg.on && cfg.modo === 'cuerpo' && vc) detectorP(); texto(); });
         [['gsCol', 'col'], ['gsDep', 'dep']].forEach(([id, k]) => $e(id).addEventListener('change', () => { cfg[k] = $e(id).value; guarda(); if (sc || sd) abre(true); }));
-        const tab = $e('tabContent15'); if (tab) new MutationObserver(() => { if (!tab.classList.contains('hidden')) vacio(); }).observe(tab, { attributes: true, attributeFilter: ['class'] }); vacio();
-        lista().catch(() => {}); }   // v12.42 · la cámara ya no se abre sola al arrancar: solo cuando la pides
+        let li = false; const tab = $e('tabContent15'); if (tab) new MutationObserver(() => { if (!tab.classList.contains('hidden')) { vacio(); if (!li) { li = true; lista().catch(() => {}); } } }).observe(tab, { attributes: true, attributeFilter: ['class'] }); vacio(); }   /* v12.45 · la lista de cámaras se busca al abrir su pestaña, no al arrancar */   // v12.42 · la cámara ya no se abre sola al arrancar: solo cuando la pides
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else setTimeout(init, 0);
       return { abre, para, usa, fin, get estado() { const ahora = performance.now(); return { on: cfg.on, modo: cfg.modo, color: !!sc, prof: !!sd, bits: info.bits || 0, manos: ahora - resT < 600 ? ((res && res.multiHandLandmarks) || []).length : 0, cuerpo: !!(CU.visto && ahora - CU.visto < 600), cerca, det: !!hands, detP: !!pose, abriendo, aviso, cx, ms: Math.round(info.ms || 0), jugadores: J.map(j => j && ahora - j.visto < 600 && j.slot !== undefined ? j.slot : null) }; } };
     })();
