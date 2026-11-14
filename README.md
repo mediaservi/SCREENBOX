@@ -5,7 +5,7 @@ Sistema de juegos sencillos y clásicos jugables en una pantalla o en salas inme
 
 🔗 **Juega ahora:** [msgame.mediaservi.com](https://msgame.mediaservi.com)
 
-**Versión actual: v12.45**
+**Versión actual: v12.46**
 
 ## Cómo se juega
 
@@ -36,7 +36,12 @@ Sistema de juegos sencillos y clásicos jugables en una pantalla o en salas inme
 - **WONDERWALK** *(en desarrollo)*: paseo hasta el castillo buscando los objetos de tu lista.
 - **KRAZYGOLF** *(en desarrollo)*: minigolf clásico en 3D o en modo KRAZY.
 
-## Cambios de la versión actual (v12.45)
+## Cambios de la versión actual (v12.46)
+
+- **BITCLAUD, del tamaño de una cinta:** ahora es la funda de un casete, como la cinta del walkman, apoyada detrás de él con la carátula apaisada (el monitor sonriente a la izquierda y el título a la derecha).
+- **Cada cosa con su zona para tocar:** la carátula de mediaservi que queda detrás solo abre tu página desde su mitad de arriba. Abajo, BITCLAUD tiene su propia zona (da un saltito con su sonido) y el walkman la suya, la de las emisoras. Tocar el walkman o la cinta ya no abre la página.
+
+### v12.45
 
 - **La cámara ya no se enciende sola.** Si en una sesión anterior alguien jugó con la mano o con el cuerpo, al volver a abrir MSGAME todos empiezan con ratón o móvil. La cámara y el detector de manos solo se encienden cuando alguien elige «mano» o «cuerpo» en «¿Cómo jugáis?» o la activas en AJUSTES.
 - **Al arrancar no se buscan cámaras:** la lista de cámaras se busca al abrir su pestaña de AJUSTES, y la de entradas de vídeo, al tocar su lista.
@@ -630,7 +635,7 @@ Sigue de la v7.3:
 Código abierto bajo la licencia **GNU GPL v3** (ver `LICENSE`): puedes usarlo, modificarlo y distribuirlo, también en eventos comerciales, siempre que las versiones modificadas que distribuyas sigan siendo abiertas con esta misma licencia.
 
 ---
-*MSGAME v12.45 es un proyecto hecho con ⚙ by [mediaservi.com](https://mediaservi.com)*
+*MSGAME v12.46 es un proyecto hecho con ⚙ by [mediaservi.com](https://mediaservi.com)*
 
 ## Aviso
 
