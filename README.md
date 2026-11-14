@@ -5,7 +5,7 @@ Sistema de juegos sencillos y clásicos jugables en una pantalla o en salas inme
 
 🔗 **Juega ahora:** [msgame.mediaservi.com](https://msgame.mediaservi.com)
 
-**Versión actual: v12.46**
+**Versión actual: v12.47**
 
 ## Cómo se juega
 
@@ -36,7 +36,17 @@ Sistema de juegos sencillos y clásicos jugables en una pantalla o en salas inme
 - **WONDERWALK** *(en desarrollo)*: paseo hasta el castillo buscando los objetos de tu lista.
 - **KRAZYGOLF** *(en desarrollo)*: minigolf clásico en 3D o en modo KRAZY.
 
-## Cambios de la versión actual (v12.46)
+## Cambios de la versión actual (v12.47)
+
+- **PUNTERÍA: cada personaje entra por donde tiene lógica.** Cada uno de los 6 escenarios pintados tiene su mapa: puertas, ventanas, tumbas, valla, abertura del muro, suelo, cielo y sitios donde posar objetos.
+  - **Fundido:** los que asoman aparecen poco a poco en ventanas y puertas (en las puertas, de cuerpo entero). En Zombieland también asoman por detrás de las lápidas.
+  - **Zombis:** salen de la tierra delante de una tumba o por la puerta de una cripta. Para llegar a ti, o entran andando por la abertura de la valla o la saltan; nunca la atraviesan. Solo el fantasma cruza muros y vallas.
+  - **Detrás de la valla se ve detrás:** los barrotes, los pilares y los bidones tapan a quien va por detrás. En Western, los cactus de delante tapan a quien pasa por detrás.
+  - **A ras de suelo:** los que andan pisan el suelo con su sombra y se hacen más grandes cuanto más cerca están. Salen por una puerta o una abertura y se van por la calle o entran por otra puerta. En Western y Alpine también cruzan la calle de lado a lado.
+  - **Objetos posados:** botellas, latas, calabazas y cerebros vuelven a estar encima de barriles, barandas, almenas, pilares y lápidas, en vez de volar.
+  - **Warfront:** los coches vienen desde el fondo de la carretera y los soldados se asoman por detrás de los restos y del tanque.
+
+### v12.46
 
 - **BITCLAUD, del tamaño de una cinta:** ahora es la funda de un casete, como la cinta del walkman, apoyada detrás de él con la carátula apaisada (el monitor sonriente a la izquierda y el título a la derecha).
 - **Cada cosa con su zona para tocar:** la carátula de mediaservi que queda detrás solo abre tu página desde su mitad de arriba. Abajo, BITCLAUD tiene su propia zona (da un saltito con su sonido) y el walkman la suya, la de las emisoras. Tocar el walkman o la cinta ya no abre la página.
@@ -635,7 +645,7 @@ Sigue de la v7.3:
 Código abierto bajo la licencia **GNU GPL v3** (ver `LICENSE`): puedes usarlo, modificarlo y distribuirlo, también en eventos comerciales, siempre que las versiones modificadas que distribuyas sigan siendo abiertas con esta misma licencia.
 
 ---
-*MSGAME v12.46 es un proyecto hecho con ⚙ by [mediaservi.com](https://mediaservi.com)*
+*MSGAME v12.47 es un proyecto hecho con ⚙ by [mediaservi.com](https://mediaservi.com)*
 
 ## Aviso
 
